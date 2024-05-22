@@ -6,8 +6,12 @@ const createOrderIntoDB = async (order: IOrderType) => {
   return result;
 };
 
-const getAllOrderFromDB = async () => {
-  const result = await OrderModel.find();
+const getAllOrderFromDB = async (email: string | null) => {
+  if (!email) {
+    const result = await OrderModel.find();
+    return result;
+  }
+  const result = await OrderModel.find({ email });
   return result;
 };
 

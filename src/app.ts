@@ -12,10 +12,15 @@ app.use(cors());
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
-const getAController = (req: Request, res: Response) => {
+const getAController = (_req: Request, res: Response) => {
   res.json('App is running');
 };
 
 app.get('/', getAController);
+
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+app.use((_req, res, _next) => {
+  res.status(404).json({ success: false, message: 'Route not found' });
+});
 
 export default app;
