@@ -9,7 +9,10 @@ app.use(express.json());
 app.use(cors());
 
 // application routes
+
+// product routes
 app.use('/api/products', productRoutes);
+// order routes
 app.use('/api/orders', orderRoutes);
 
 const getAController = (_req: Request, res: Response) => {

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { productService } from './product.service';
 import productValidationSchema from './product.validation';
 
+// create product
 const createProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body;
@@ -16,13 +17,13 @@ const createProduct = async (req: Request, res: Response) => {
     const zodParseData = productValidationSchema.parse(product);
     const result = await productService.createProductIntoDB(zodParseData);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Product created successfully!',
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error instanceof Error ? error.message : 'something went wrong',
       error: error,
@@ -30,6 +31,7 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+// get all product
 const getAllProduct = async (req: Request, res: Response) => {
   try {
     const searchTerm = req.query.searchTerm || null;
@@ -38,7 +40,7 @@ const getAllProduct = async (req: Request, res: Response) => {
       searchTerm as string,
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message:
         searchTerm !== null
@@ -47,7 +49,7 @@ const getAllProduct = async (req: Request, res: Response) => {
       data: products,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error instanceof Error ? error.message : 'something went wrong',
       error: error,
@@ -55,6 +57,7 @@ const getAllProduct = async (req: Request, res: Response) => {
   }
 };
 
+// get single product
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
@@ -81,6 +84,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
+// update single product
 const updateSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
@@ -104,6 +108,7 @@ const updateSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
+// delete single product
 const deleteSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
