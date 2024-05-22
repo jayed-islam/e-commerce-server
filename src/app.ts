@@ -16,7 +16,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
 const getAController = (_req: Request, res: Response) => {
-  res.json('App is running');
+  res.json('E-commerce server app is running=');
 };
 
 app.get('/', getAController);
