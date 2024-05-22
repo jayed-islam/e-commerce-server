@@ -32,11 +32,18 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const products = await productService.getAllProductFromDB();
+    const searchTerm = req.query.searchTerm || null;
+
+    const products = await productService.getAllProductFromDB(
+      searchTerm as string,
+    );
 
     res.status(200).json({
       success: true,
-      message: 'Products fetched successfully!',
+      message:
+        searchTerm !== null
+          ? `Products matching search term '${searchTerm}' fetched successfully!`
+          : 'Products fetched successfully!',
       data: products,
     });
   } catch (error) {
@@ -117,38 +124,10 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
-const getProductBySearch = async (req: Request, res: Response) => {
-  try {
-    const { productId } = req.params;
-    const result = await productService.deleteSingleProductFromDB(productId);
-
-    if (result.deletedCount === 0) {
-      res.status(404).json({
-        success: false,
-        message: 'Product not found!',
-        data: null,
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: 'Product deleted successfully!',
-      data: null,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error instanceof Error ? error.message : 'something went wrong',
-      error: error,
-    });
-  }
-};
-
 export const productController = {
   createProduct,
   getAllProduct,
   getSingleProduct,
   updateSingleProduct,
   deleteSingleProduct,
-  getProductBySearch,
 };
